@@ -3464,8 +3464,8 @@ def GradioSetup(UTheme=gr.themes.Soft()):
                             value="## "
                             + i18n("Merge your generated audios with the instrumental")
                         )
-                        gr.Markdown(value="", scale="-0.5", visible=True)
-                        gr.Markdown(value="", scale="-0.5", visible=True)
+                        gr.Markdown(value="", visible=True)
+                        gr.Markdown(value="", visible=True)
                         with gr.Row():
                             with gr.Column():
                                 dropbox = gr.File(label=i18n("Drag your audio here:"))
@@ -3827,7 +3827,7 @@ def GradioRun(app):
             inbrowser=not config.noautoopen,
             server_port=config.listen_port,
             quiet=True,
-            favicon_path=".\images\icon.png",
+            favicon_path="./images/icon.png",
             share=share_gradio_link,
         )
 
