@@ -46,3 +46,6 @@ values1.json
 logs/*
 logs/mute/0_gt_wavs/mute40k.spec.pt
 !logs/mute/
+# Virtual environment
+venv/
+.venv/
