@@ -14,18 +14,39 @@ sys.path.append(now_dir)
 import mdx
 branch = "https://github.com/NaJeongMo/Colab-for-MDX_B"
 
-model_params = "https://raw.githubusercontent.com/TRvlvr/application_data/main/mdx_model_data/model_data.json"
+model_params_url = "https://raw.githubusercontent.com/TRvlvr/application_data/main/mdx_model_data/model_data.json"
 _Models = "https://github.com/TRvlvr/model_repo/releases/download/all_public_uvr_models/"
 # _models = "https://pastebin.com/raw/jBzYB8vz"
 _models = "https://raw.githubusercontent.com/TRvlvr/application_data/main/filelists/download_checks.json"
-stem_naming = "https://pastebin.com/raw/mpH4hRcF"
+stem_naming_url = "https://pastebin.com/raw/mpH4hRcF"
 
 file_folder = "Colab-for-MDX_B"
-model_ids = requests.get(_models).json()
-model_ids = model_ids["mdx_download_list"].values()
-#print(model_ids)
-model_params = requests.get(model_params).json()
-stem_naming = requests.get(stem_naming).json()
+
+# Helper function to safely fetch JSON with fallbacks
+def safe_json_fetch(url, fallback=None, timeout=10):
+    try:
+        response = requests.get(url, timeout=timeout)
+        response.raise_for_status()
+        return response.json()
+    except Exception as e:
+        print(f"Warning: Failed to fetch {url}: {e}")
+        return fallback if fallback is not None else {}
+
+# Fetch model data with error handling
+model_ids_data = safe_json_fetch(_models, {"mdx_download_list": {}})
+model_ids = model_ids_data.get("mdx_download_list", {}).values()
+
+model_params = safe_json_fetch(model_params_url, {})
+
+# Fallback stem naming data (common MDX stem names)
+stem_naming_fallback = {
+    "Vocals": "vocals",
+    "Instrumental": "instrumental",
+    "Drums": "drums",
+    "Bass": "bass",
+    "Other": "other"
+}
+stem_naming = safe_json_fetch(stem_naming_url, stem_naming_fallback)
 
 os.makedirs("tmp_models", exist_ok=True)
 
